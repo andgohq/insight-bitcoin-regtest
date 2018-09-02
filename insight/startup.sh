@@ -46,6 +46,8 @@ bitcoin-cli -regtest $AUTH stop
 
 sleep 1
 
-screen -dms blocks /bin/bash -c "while true ; do bitcoin-cli -regtest $AUTH generate 1 & sleep 5; done"
+# screen -dms blocks /bin/bash -c "while true ; do bitcoin-cli -regtest $AUTH generate 1 & sleep 5; done"
 
-bitcored
+# bitcored
+
+node ./faucet.js

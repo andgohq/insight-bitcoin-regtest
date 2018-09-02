@@ -1,0 +1,16 @@
+{
+  "name": "faucet-api",
+  "version": "1.0.0",
+  "description": " for insight-bitcoin-regtest",
+  "main": "faucet.js",
+  "scripts": {
+    "start": "node faucet.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "AndGo, Inc.",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.16.3",
+    "node-schedule": "^1.3.0"
+  }
+}

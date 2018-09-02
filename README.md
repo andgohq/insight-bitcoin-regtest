@@ -22,6 +22,9 @@ Following commands are enabled under the root dir of the project.
 
 `curl http://localhost:3001/api/addr/mnJQyeDFmGjNoxyxKQC6MMFdpx77rYV3Bo/balance`
 
+# Faucet API example
+
+`curl http://localhost:3000/faucet/mnJQyeDFmGjNoxyxKQC6MMFdpx77rYV3Bo?amount=1`
 
 # Summary
 

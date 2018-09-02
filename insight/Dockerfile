@@ -15,8 +15,20 @@ RUN npm install -g --unsafe-perm=true bitcore@latest
 RUN bitcore create /data/bitcore —-regtest
 ADD bitcore-node.json /data/bitcore/
 
+# faucet rest api
+EXPOSE 3000
+
+# insight rest api
 EXPOSE 3001
+
+# bitcoind network
 EXPOSE 8333
+
+# faucet rest api
+#RUN mkdir -p /data/faucet
+#WORKDIR /data/faucet
+#ADD package.json /data/faucet/
+#RUN npm install
 
 WORKDIR /data/bitcore
 RUN bitcore install insight-api insight-ui
@@ -29,5 +41,8 @@ ADD bitcoin.conf /data/bitcoin/
 ADD wallet.backup /data/bitcoin/
 ADD startup.sh /data/bitcore/
 ADD bitcoin.conf /root/.bitcoin/
+
+ADD faucet.js /data/bitcore/data/
+RUN npm install express node-schedule
 
 ENTRYPOINT ./startup.sh
