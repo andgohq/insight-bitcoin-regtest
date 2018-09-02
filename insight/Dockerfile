@@ -24,12 +24,6 @@ EXPOSE 3001
 # bitcoind network
 EXPOSE 8333
 
-# faucet rest api
-#RUN mkdir -p /data/faucet
-#WORKDIR /data/faucet
-#ADD package.json /data/faucet/
-#RUN npm install
-
 WORKDIR /data/bitcore
 RUN bitcore install insight-api insight-ui
 
