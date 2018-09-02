@@ -1,7 +1,5 @@
 # Bitcoin Regtest with Insight and Faucet API
 
-This is forked from https://github.com/andgohq/insight-bitcoin-regtest.
-
 * New blocks are mined automatically every 20 seconds
 * Insight API & UI: port 3001
 * Faucet API: port 3000
@@ -27,3 +25,7 @@ Following commands are enabled under the root dir of the project.
 # Faucet API example
 
 `curl -X POST http://localhost:3000/faucet/mnJQyeDFmGjNoxyxKQC6MMFdpx77rYV3Bo?amount=10`
+
+# Note
+
+This is forked from https://github.com/hunterlong/btcregtest-insight.
