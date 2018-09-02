@@ -6,15 +6,17 @@ const express = require('express');
 const app = new express();
 
 const AUTH = '-rpcuser=bitcoin -rpcpassword=password123';
+const UPDATE_INTERVAL_SEC = 20;
 
-schedule.scheduleJob('*/5 * * * * *', function() {
+
+schedule.scheduleJob(`*/${UPDATE_INTERVAL_SEC} * * * * *`, function() {
   exec(`bitcoin-cli -regtest ${AUTH} generate 1`, (err, stdout, stderr) => {
     if (err) { console.log(err); }
     console.log(stdout);
   });
 });
 
-app.get('/faucet/:address', (req, res) => {
+app.post('/faucet/:address', (req, res) => {
   const address = req.params.address;
   const amount = req.query.amount || 0;
 
