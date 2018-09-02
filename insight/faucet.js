@@ -1,13 +1,14 @@
 'use strict';
 
+const AUTH = '-rpcuser=bitcoin -rpcpassword=password123';
+const UPDATE_INTERVAL_SEC = 20;
+const PORT_FAUCET = 3000;
+const PORT_INSIGHT = 3001;
+
 const schedule = require('node-schedule');
 const exec = require('child_process').exec;
 const express = require('express');
 const app = new express();
-
-const AUTH = '-rpcuser=bitcoin -rpcpassword=password123';
-const UPDATE_INTERVAL_SEC = 20;
-
 
 schedule.scheduleJob(`*/${UPDATE_INTERVAL_SEC} * * * * *`, function() {
   exec(`bitcoin-cli -regtest ${AUTH} generate 1`, (err, stdout, stderr) => {
@@ -36,9 +37,21 @@ app.post('/faucet/:address', (req, res) => {
   }
 });
 
-app.listen(3000, () => {
+app.listen(PORT_FAUCET, () => {
     console.log('Faucet server up!');
 });
+
+// proxy
+var proxy = require('http-proxy-middleware');
+var options = {
+  target: `http://localhost:${PORT_INSIGHT}`,
+  changeOrigin: true,
+  router: {
+    [`localhost:${PORT_FAUCET}`]: `http://localhost:${PORT_INSIGHT}`,  // insight ui
+    [`localhost:${PORT_FAUCET}/api`]: `http://localhost:${PORT_INSIGHT}/api`  // insight api
+  }
+};
+app.use('/', proxy(options));
 
 // run bitcore server
 // reference: https://github.com/bitpay/bitcore/blob/master/bin/bitcored

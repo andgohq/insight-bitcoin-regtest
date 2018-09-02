@@ -1,8 +1,9 @@
 # Bitcoin Regtest with Insight and Faucet API
 
 * New blocks are mined automatically every 20 seconds
-* Insight API & UI: port 3001
-* Faucet API: port 3000
+* Insight UI: http://localhost:3000/
+* Insight API: http://localhost:3000/api/
+* Faucet API: http://localhost:3000/faucet/
 
 # Requirement
 * docker & docker-compose
@@ -20,7 +21,7 @@ Following commands are enabled under the root dir of the project.
 
 # Insight API example
 
-`curl http://localhost:3001/api/addr/mnJQyeDFmGjNoxyxKQC6MMFdpx77rYV3Bo/balance`
+`curl http://localhost:3000/api/addr/mnJQyeDFmGjNoxyxKQC6MMFdpx77rYV3Bo/balance`
 
 # Faucet API example
 
