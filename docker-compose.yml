@@ -1,0 +1,8 @@
+version: '3'
+services:
+  btcserver:
+    image: andgo/insight-bitcoin-regtest
+    ports:
+      - "3001:3001"
+    build: "."
+  
