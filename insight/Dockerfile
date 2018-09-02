@@ -34,6 +34,6 @@ ADD startup.sh /data/bitcore/
 ADD bitcoin.conf /root/.bitcoin/
 
 ADD faucet.js /data/bitcore/data/
-RUN npm install express node-schedule http-proxy-middleware
+RUN npm install express node-schedule http-proxy-middleware body-parser
 
 ENTRYPOINT ./startup.sh

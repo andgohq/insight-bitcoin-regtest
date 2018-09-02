@@ -8,7 +8,14 @@ const PORT_INSIGHT = 3001;
 const schedule = require('node-schedule');
 const exec = require('child_process').exec;
 const express = require('express');
+var bodyParser = require('body-parser');
 const app = new express();
+
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: true }));
+
+// parse application/json
+app.use(bodyParser.json());
 
 schedule.scheduleJob(`*/${UPDATE_INTERVAL_SEC} * * * * *`, function() {
   exec(`bitcoin-cli -regtest ${AUTH} generate 1`, (err, stdout, stderr) => {
@@ -19,7 +26,12 @@ schedule.scheduleJob(`*/${UPDATE_INTERVAL_SEC} * * * * *`, function() {
 
 app.post('/faucet/:address', (req, res) => {
   const address = req.params.address;
-  const amount = req.query.amount || 0;
+  const amount = req.body.amount || 0;
+
+  if (!amount) {
+    res.status(500).send({ error: 'Wrong Amount', body: req.body });
+    return;
+  }
 
   if (!address) {
     res.status(500).send({ error: 'Wrong Address' });

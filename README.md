@@ -25,7 +25,7 @@ Following commands are enabled under the root dir of the project.
 
 # Faucet API example
 
-`curl -X POST http://localhost:3000/faucet/mnJQyeDFmGjNoxyxKQC6MMFdpx77rYV3Bo?amount=10`
+`curl -d "amount=10"  http://localhost:3000/faucet/mnJQyeDFmGjNoxyxKQC6MMFdpx77rYV3Bo`
 
 # Note
 
