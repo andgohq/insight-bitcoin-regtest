@@ -1,9 +1,10 @@
-# Bitcoin Regtest with Insight API
+# Bitcoin Regtest with Insight and Faucet API
 
 This is forked from https://github.com/andgohq/insight-bitcoin-regtest.
 
-# Build docker iamge
-`docker build -t andgo/insight-bitcoin-regtest .`
+* New blocks are mined automatically every 20 seconds
+* Insight API & UI: port 3001
+* Faucet API: port 3000
 
 # Usage
 
@@ -24,12 +25,7 @@ Following commands are enabled under the root dir of the project.
 
 # Faucet API example
 
-`curl http://localhost:3000/faucet/mnJQyeDFmGjNoxyxKQC6MMFdpx77rYV3Bo?amount=1`
-
-# Summary
-
-The wallets below have a couple BTC in them so you can begin testing quickly!
-**New blocks are mined automatically every 5 seconds!**
+`curl http://localhost:3000/faucet/mnJQyeDFmGjNoxyxKQC6MMFdpx77rYV3Bo?amount=10`
 
 # Wallet Private Keys
 The private keys are based on a mnemonic phrase by default. For ease of use, use these private keys while interacting with your application.
