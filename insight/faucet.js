@@ -11,12 +11,6 @@ const express = require('express');
 var bodyParser = require('body-parser');
 const app = new express();
 
-// parse application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded({ extended: true }));
-
-// parse application/json
-app.use(bodyParser.json());
-
 schedule.scheduleJob(`*/${UPDATE_INTERVAL_SEC} * * * * *`, function() {
   exec(`bitcoin-cli -regtest ${AUTH} generate 1`, (err, stdout, stderr) => {
     if (err) { console.log(err); }
@@ -64,6 +58,12 @@ var options = {
   }
 };
 app.use('/', proxy(options));
+
+// Node: The http-proxy-middleware should be above the body-parser https://github.com/chimurai/http-proxy-middleware/issues/40
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: true }));
+// parse application/json
+app.use(bodyParser.json());
 
 // run bitcore server
 // reference: https://github.com/bitpay/bitcore/blob/master/bin/bitcored

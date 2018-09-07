@@ -17,6 +17,7 @@ ADD bitcore-node.json /data/bitcore/
 
 # insight & faucet rest api
 EXPOSE 3000
+# EXPOSE 3001
 
 # bitcoind network
 EXPOSE 8333
