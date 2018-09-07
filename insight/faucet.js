@@ -14,9 +14,9 @@ const app = new express();
 function systemSync(cmd) {
   try {
     execSync(cmd, { timeout: 1000 });
-    return { errCode: 200, message: 'ok' };
+    return { status: 200, message: 'ok' };
   } catch (error) {
-    return { errCode: 500, message: error.stderr.toString() };
+    return { status: 500, message: error.stderr.toString() };
   }
 }
 
