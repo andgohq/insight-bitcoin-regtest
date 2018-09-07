@@ -6,16 +6,22 @@ const PORT_FAUCET = 3000;
 const PORT_INSIGHT = 3001;
 
 const schedule = require('node-schedule');
-const exec = require('child_process').exec;
+const execSync = require('child_process').execSync;
 const express = require('express');
 var bodyParser = require('body-parser');
 const app = new express();
 
+function systemSync(cmd) {
+  try {
+    execSync(cmd, { timeout: 1000 });
+    return { errCode: 200, message: 'ok' };
+  } catch (error) {
+    return { errCode: 500, message: error.stderr.toString() };
+  }
+}
+
 schedule.scheduleJob(`*/${UPDATE_INTERVAL_SEC} * * * * *`, function() {
-  exec(`bitcoin-cli -regtest ${AUTH} generate 1`, (err, stdout, stderr) => {
-    if (err) { console.log(err); }
-    console.log(stdout);
-  });
+  systemSync(`bitcoin-cli -regtest ${AUTH} generate 1`);
 });
 
 // proxy
@@ -25,11 +31,11 @@ var options = {
   changeOrigin: true,
   router: {
     [`localhost:${PORT_FAUCET}`]: `http://localhost:${PORT_INSIGHT}`,  // insight ui
-    [`localhost:${PORT_FAUCET}/api`]: `http://localhost:${PORT_INSIGHT}/api`  // insight api
+    [`localhost:${PORT_FAUCET}/api`]: `http://localhost:${PORT_INSIGHT}/api`,  // insight api
   }
 };
 // Node: The http-proxy-middleware should be above the body-parser https://github.com/chimurai/http-proxy-middleware/issues/40
-app.use('/', proxy(options));
+app.use(proxy(['!/faucet/**'], options));
 
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -53,14 +59,15 @@ app.post('/faucet/:address', (req, res) => {
 
     const cmd = `sendmany "" '{"${address}":${amount}}'`;
 
-    exec(`bitcoin-cli -regtest ${cmd}`, (err, stdout, stderr) => {
-      if (err) { console.log(err); }
-      console.log(stdout);
-    });
-
-    res.send({ message: 'ok' });
+    const result = systemSync(`bitcoin-cli -regtest ${cmd}`);
+    if (result.status === 200) {
+      res.send({ message: result.message });
+    } else {
+      res.status(500).send({ error: result.message, body: req.body });
+    }
   }
 });
+
 
 app.listen(PORT_FAUCET, () => {
     console.log('Faucet server up!');
